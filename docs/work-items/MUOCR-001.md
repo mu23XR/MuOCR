@@ -1,6 +1,6 @@
 # MUOCR-001 — Extract and optimize MuOCR
 
-Owner: Codex. Started: 2026-10-27. Status: local extraction/optimization complete; independent publication resumed under MUOCR-009 on 2026-11-12, pending repository-creation authentication and cloud CI.
+Owner: Codex. Started: 2026-10-27. Status: complete; independent repository publication and actual cloud CI completed under MUOCR-009 on 2026-11-12. Real-device 1GB acceptance remains separate and outstanding.
 
 ## Scope and authorization
 
@@ -62,3 +62,9 @@ User requested optimizing MuOCR from their GitHub munote project and creating a 
 - GitHub connector has no repository-creation tool; local CLI has no authenticated account.
 - Browser automation stopped because current Chrome URL could not be identified reliably for policy enforcement.
 - User subsequently chose “先完成本地优化”; finish local validation and commit first. Independent GitHub repository creation/upload is pending and must not be reported as complete.
+
+### Publication completed — 2026-11-12 (supersedes the earlier stop checkpoint)
+
+- Public [mu23XR/MuOCR](https://github.com/mu23XR/MuOCR) is created and contains only the independent66-file project. CI-tested remote186eea6 and local25cce65 have identical complete tree35f2bec3c0ba36cad8f46df3b9b4eacdda330c7d; old local history remains preserved.
+- MuOCR1.1.9/code15 passes local119/119 tests, full lint0errors/23warnings and Release build. Actual [cloud CI43078329399](https://github.com/mu23XR/MuOCR/actions/runs/43078329399) passes unit tests, full lint, Release assembly and original package/signature verification on JDK17/Gradle8.11.1/SDK36. Its artifact list is empty.
+- Used the existing GitHub connector after the user accepted its all-repository access; no new native Git credential or device authorization was created. No munote content, workflow or artifact was modified. Full evidence and limits are in MUOCR-009.

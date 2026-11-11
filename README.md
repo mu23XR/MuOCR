@@ -1,5 +1,7 @@
 # MuOCR
 
+[GitHub 仓库](https://github.com/mu23XR/MuOCR) · [CI 运行记录](https://github.com/mu23XR/MuOCR/actions)
+
 独立 Android OCR 工具，将大型扫描 PDF 转为可搜索 PDF。中文、英文识别后，在原始页面追加不可见文字层，保留扫描页面的可见内容。
 
 本项目从 [mu23XR/munote](https://github.com/mu23XR/munote) 的 MuOCR 1.1.3 模块独立提取，来源提交为 `91bb4bb480886b0582a2a33ff540024447fcc558`。此仓库仅包含 MuOCR，不依赖 MuNote 应用。
@@ -7,7 +9,7 @@
 ## v1.1.9：完整 Lint 与独立仓库 CI
 
 - 移除对 WorkManager 内部结果类型和字段的读取，改用应用自己的文档处理结果，只在后台任务边界转换为公开 API；保留完成文件保护、暂停/取消、错误上下文和旧请求的输出字段。
-- 正式单测119项、完整 `lintRelease`（0错误、23项警告）与 Release 构建通过，不使用Lint屏蔽或基线隐藏错误。独立仓库CI执行同样的完整检查及签名/包名校验。
+- 本地正式单测119项、完整 `lintRelease`（0错误、23项警告）与 Release 构建通过，不使用Lint屏蔽或基线隐藏错误。独立仓库在JDK17/Gradle8.11.1/SDK36上的[云端CI也已通过](https://github.com/mu23XR/MuOCR/actions/runs/43078329399)，包括单测、完整Lint、Release构建及原签名/包名校验。
 - 普通推送/PR只生成检查摘要，不上传APK/测试产物，不写入Gradle云缓存。需要下载云端APK时，在Actions手动运行并勾选 `upload_apk`，产物保留1天。
 - 原395页/真实设备1GB验证仍待完成；云端CI不等于真实大文件验收。发布/CI最新证据见 [MUOCR-009](docs/work-items/MUOCR-009.md)。
 
@@ -79,7 +81,7 @@ APK 位于 `ocrtool/build/outputs/apk/release/ocrtool-release.apk`。构建首�
 
 ## 维护
 
-[项目状态](docs/STATUS.md) · [工作项](docs/work-items/MUOCR-001.md) · [决策](docs/DECISIONS.md) · [会话交接](docs/handoffs/2026-10-27.md)
+[项目状态](docs/STATUS.md) · [发布与CI工作项](docs/work-items/MUOCR-009.md) · [决策](docs/DECISIONS.md) · [最新会话交接](docs/handoffs/2026-11-12.md)
 
 ## 许可
 

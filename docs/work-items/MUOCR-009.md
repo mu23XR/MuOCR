@@ -1,6 +1,6 @@
 # MUOCR-009 — 完整 Lint、独立 GitHub 发布与 CI
 
-Owner: Codex. Claimed: 2026-11-12. Status: local implementation and full checks complete; public MuOCR repository created; source upload/CI in progress using the existing connector.
+Owner: Codex. Claimed: 2026-11-12. Status: complete; local full checks, independent public source publication and actual cloud CI passed.
 
 ## 授权与边界
 
@@ -29,7 +29,7 @@ Owner: Codex. Claimed: 2026-11-12. Status: local implementation and full checks 
 - 用户询问是否已有授权后，停止旧设备码流程并补充核对：通过Git凭据接口分别查询指定/默认GitHub用户均无可用凭据；标准GitHub CLI配置/程序不存在。现有GitHub connector登录有效，但它的授权不会导出到本机Git，仍缺建库API权限/本机认证。未读取或记录其他服务凭据，未创建/覆盖远端仓库。
 - 已准备忽略目录中的create_repo.py：仅可用现有Git凭据访问GitHub本人身份并创建公开mu23XR/MuOCR；核对账号、拒绝非空或可见性不同的既有仓库、禁止重定向转发凭据。不包含令牌，认证完成后可直接执行。当前APK为1.1.9/code15，SHA256 `bb09862449bc6a60104f43ee2641785b7a76a67a53787af137ffbee26ee79f22`，原证书验签通过。
 
-## 下一步
+## 认证与发布过程（已完成）
 
 用户最初要求GitHub端只授权MuOCR；检查现有GitHub App安装163265090的repository_selection为all后，已明确说明这不是仓库级限制，也不能把本地URL白名单当作授权范围。随后用户明确回复“全部都可以访问吧”，授权复用现有连接并要求最后说明其他对话的使用方式。这一最新指示取代先前仅选MuOCR的条件；不再等待更改安装范围，不新增GCM OAuth/设备码。旧create_repo.py方案不再作为当前下一步。
 
@@ -37,7 +37,7 @@ Chrome已成功创建公开空仓库mu23XR/MuOCR（ID1454335693）；API确认pr
 
 本地唯一origin已配置为https://github.com/mu23XR/MuOCR.git。应用代码和本地测试结论不变，不为文档/远端URL修改重复构建。
 
-按最新授权使用现有connector上传已跟踪的独立源码；不新增本机凭据、不写入其他仓库。空仓库可先用create_file初始化，再用Git数据接口原子提交完整树；须逐文件/整树核对与本地待发布快照一致，记录远端新提交与本地实现c2ff322的对应关系，保留本地历史。随后跟进对应远端提交CI到成功；原395页/物理1GB不因云端CI绿而视为已验收。
+按最新授权使用现有connector上传独立源码：create_file初始化空仓库，再用Git数据接口原子提交完整树，并逐文件/整树核对本地快照。没有新增本机凭据、没有写入其他仓库；实现c2ff322及原本地历史保留。对应远端CI已成功，见最终验收；原395页/物理1GB不因云端CI绿而视为已验收。
 
 ## 设备码风险核对（只读，2026-11-12）
 
@@ -54,3 +54,14 @@ Chrome已成功创建公开空仓库mu23XR/MuOCR（ID1454335693）；API确认pr
 首轮CI https://github.com/mu23XR/MuOCR/actions/runs/43077565804 在setup-android阶段失败，job130721302270；日志明确`Failed to find package 'tools'`，Action默认安装`tools platform-tools`，因此尚未执行应用测试/构建。认领本工作项下的CI兼容修复：显式仅安装platform-tools，保留SDK36/build-tools35安装与原测试/lint/build门禁，不通过屏蔽步骤取得绿色状态。
 
 已按Action官方action.yml/README支持的packages输入仅选platform-tools，并关闭冗长许可证原文输出；未改SDK许可证处理行为。YAML解析/断言与git diff --check通过，完整lint门禁保留。仅CI配置和交接文档变化，不重复本地应用构建；下一步以真实云端重跑验证。
+
+修复发布为远端`186eea668653e9273b1bb82ea205a04b3454d1ec`，与本地`25cce653019cd3879b9a3e6fe3689b9206bec7fa`完整树`35f2bec3c0ba36cad8f46df3b9b4eacdda330c7d`一致；原生Git只读fetch后git diff HEAD origin/main也为空。第二轮run https://github.com/mu23XR/MuOCR/actions/runs/43078329399 已通过Android初始化、Gradle配置与SDK包安装，正在执行测试/lint/构建。连接器曾出现临时传输失败，幂等重建树重试成功；没有重复更新分支或改全局代理。Windows原生Git的Schannel握手失败时，仅该次只读fetch改用Git自带OpenSSL并保留证书验证，成功；没有登录或保存凭据。
+
+## 最终云端验收
+
+- [run43078329399](https://github.com/mu23XR/MuOCR/actions/runs/43078329399)、job130724007032均为completed/success；2026-11-11 18:29:58–18:33:40 UTC（本地11月12日）。对应提交`186eea668653e9273b1bb82ea205a04b3454d1ec`。
+- JDK17/Gradle8.11.1/SDK36实际执行`testDebugUnitTest lintRelease assembleRelease`，BUILD SUCCESSFUL（3m14s），三个任务均有完成日志。119/119及0错误/23warnings的精确计数来自本地XML；云端核验的是正式任务成功，没有下载云端XML冒充计数证据。
+- aapt确认`dev.munote.ocrtool`、1.1.9/code15、compileSdk36；apksigner确认原证书SHA256 `293258f59770e0fd5e75f6497e506d9c95dfcf82c755de66dd76ded54a467d63`。
+- upload-artifact明确skipped，Actions artifacts接口返回空列表；日志确认`Cache is read-only: will not save state for use in subsequent builds.`。没有清理或修改munote的Actions/账号计费。
+- 完成文档另行提交并使用[skip ci]，不修改应用/工作流，不重复冷构建；保留实际通过的代码/CI提交及本链接。原本地main历史保留，最终工作分支codex/published-main跟踪origin/main，避免后续误将两套根历史直接push覆盖。
+- 后续仅剩本次范围外的真实395页/物理1GB设备验收、广泛OCR准确率与23项既有Lint警告等明确待办；本次修6错误/上传/跑通CI已完成。
