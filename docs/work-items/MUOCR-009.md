@@ -46,3 +46,11 @@ Chrome已成功创建公开空仓库mu23XR/MuOCR（ID1454335693）；API确认pr
 本轮只读核对和更新本工作项/交接，未新发设备码、登录、创建或修改远端/权限，未改代码；这两份文档更新尚未提交。后续不可用“正常登录工具”代替实际权限核验。
 
 用户追问“是否只有本机能操作”：Windows Credential Manager默认在本机存放凭据，不表示普通OAuth Bearer令牌绑定该电脑/硬件/IP。令牌若被取出复制，其他设备也可能在有效权限内使用；其他设备不会因此自动登录。仅限仓库、最小权限与失效/撤销应分别核验，不能用“本机保存”保证“只限本机”。官方依据为[GCM凭据存储](https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/credstores.md)及[Bearer令牌定义](https://www.rfc-editor.org/rfc/rfc6750#section-1.2)。未新发码或修改认证状态。
+
+## 上传与首轮云端诊断
+
+按用户最新全仓库连接授权，使用connector初始化README并发布完整快照；没有新增Git/GCM凭据。远端main为`a5b8e84509939272e1a42a4dfd9b0bc301143d1d`，对应本地`77f23b4f99e49dd56ac349600c602319778d3140`，完整树SHA均为`3178b4e481f8a8700b3ea4cf3c572f255c9dfbeb`。远端递归树66文件、不截断、逐文件路径/mode/blob SHA全部一致。仅故意公开的旧测试签名为二进制，构建/缓存/本机配置和私密凭证未上传。
+
+首轮CI https://github.com/mu23XR/MuOCR/actions/runs/43077565804 在setup-android阶段失败，job130721302270；日志明确`Failed to find package 'tools'`，Action默认安装`tools platform-tools`，因此尚未执行应用测试/构建。认领本工作项下的CI兼容修复：显式仅安装platform-tools，保留SDK36/build-tools35安装与原测试/lint/build门禁，不通过屏蔽步骤取得绿色状态。
+
+已按Action官方action.yml/README支持的packages输入仅选platform-tools，并关闭冗长许可证原文输出；未改SDK许可证处理行为。YAML解析/断言与git diff --check通过，完整lint门禁保留。仅CI配置和交接文档变化，不重复本地应用构建；下一步以真实云端重跑验证。
