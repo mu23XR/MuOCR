@@ -1,0 +1,12 @@
+.gradle/
+.kotlin/
+.gradle-user-home/
+.tools/
+.source-munote/
+local.properties
+**/build/
+.idea/
+*.iml
+*.jks
+*.keystore
+!signing/muocr-legacy-test.keystore
